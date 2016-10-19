@@ -81,7 +81,7 @@ ORDER BY h.id DESC', array('discussion'=>$this->discussion->id,
             $lbl = html_writer::link(new moodle_url($url,
                 array('reply'=>$postid, 'transition'=>$transition->id, 'to'=>$sid)), $lbl);
         }
-        return $lbl.' ('.$transition->to[$sid]->alias.')';
+        return $lbl;
     }
 
     function print_transitions($member_or_id, $transitions, $clroleid, $is_selected=false) {
@@ -117,7 +117,7 @@ ORDER BY h.id DESC', array('discussion'=>$this->discussion->id,
             foreach ($transition->to as $sid=>$step) {
                 if (in_array($sid, $printed_steps)) continue;
                 $this->content->text .= html_writer::start_tag('li', array('role'=>'treeitem'));
-                $this->content->text .= $step->label.' ('.$step->alias.')';
+                $this->content->text .= $step->label;
                 $this->content->text .= html_writer::end_tag('li');
                 $printed_steps[] = $sid;
             }
