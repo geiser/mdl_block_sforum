@@ -26,7 +26,7 @@
 .block_sforum .content ul.tab li a:hover {background-color: #ddd;}
 
 /* Create an active/current tablink class */
-.block_sforum .content ul.tab li a:focus, .active {background-color: #ccc;}
+.block_sforum .content ul.tab li a:focus, .block_sforum .content .active {background-color: #ccc;}
 
 /* Style the tab content */
 .block_sforum .content .tabcontent {
@@ -54,7 +54,7 @@
  * Add a background color to the button if it is clicked on (add the .active class with JS),
  * and when you move the mouse over it (hover)
  */
-.block_sforum .content .tabcontent button.accordion.active, button.accordion:hover {
+.block_sforum .content .tabcontent button.accordion.active, .block_sforum .content .tabcontent button.accordion:hover {
         background-color: #ddd;
 }
 
