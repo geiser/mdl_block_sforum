@@ -1,6 +1,6 @@
 /* Style the list */
 .block_sforum .content ul.tab {
-        list-style-type: none;
+        /*list-style-type: none;*/
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -19,7 +19,7 @@
         padding: 2px 2px;
         text-decoration: none;
         transition: 0.3s;
-        /*font-size: 9px;*/
+        font-size: 9px;
 }
 
 /* Change background color of links on hover */
