@@ -134,11 +134,12 @@ ORDER BY h.id DESC', array('discussion'=>$this->discussion->id,
         global $DB, $USER;
 
         $html_tabs = array();
-
         // print the first clrole and first member
         $member = $members[$USER->id];
         $clrole_lbl =  $clroles[$this->clroleid];
-        $clrole_lbl = substr($clrole_lbl, 0, strpos($clrole_lbl, ' '));
+        if (strpos($clrole_lbl, " ") !== false) {
+            $clrole_lbl = substr($clrole_lbl, 0, strpos($clrole_lbl, ' '));
+        }
         $html_tabs[] = html_writer::tag('div', '&nbsp;'.$clrole_lbl.'&nbsp;',
             array('class'=>'tablinks active', 'group'=>'tabcontent-'.$this->clroleid));
 
@@ -159,7 +160,9 @@ ORDER BY h.id DESC', array('discussion'=>$this->discussion->id,
         $html_tabs[] = '|';
         // print the rest of clroles and members
         foreach ($clroles as $clroleid=>$clrole_lbl) {
-            $clrole_lbl = substr($clrole_lbl, 0, strpos($clrole_lbl, ' '));
+            if (strpos($clrole_lbl, " ") !== false) {
+                $clrole_lbl = substr($clrole_lbl, 0, strpos($clrole_lbl, ' '));
+            }
             $html_tabs[] = html_writer::tag('div', '&nbsp;'.$clrole_lbl.'&nbsp;',
                 array('class'=>'tablinks', 'group'=>'tabcontent-'.$clroleid));
             $this->content->text .= html_writer::start_tag('div',
