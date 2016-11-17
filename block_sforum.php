@@ -65,21 +65,40 @@ AND m.userid = :userid', array('userid'=>$USER->id));
         $lbl = html_writer::tag('i', $transition->to[$sid]->label);
 
         if ($member->id == $USER->id) {
-            $postid = $this->discussion->firstpost;
+            $menu_postid = $this->discussion->firstpost;
             if ($transition->from) {
 
-                $postid = $DB->get_field_sql('SELECT h.post
+                $menu_postid = $DB->get_records_sql_menu('SELECT h.post, u.firstname
 FROM {sforum_performed_transitions} h
-INNER JOIN {sforum_posts} p ON p.id = h.post 
+INNER JOIN {sforum_posts} p ON p.id = h.post
+INNER JOIN {user} u ON u.id = p.userid
 WHERE p.discussion = :discussion AND h.toid = :toid
 ORDER BY h.id DESC', array('discussion'=>$this->discussion->id,
-                           'toid'=>$transition->from->id), IGNORE_MULTIPLE);
+                           'toid'=>$transition->from->id));
             }
 
             $url = '/mod/sforum/post.php';
-            
-            $lbl = html_writer::link(new moodle_url($url,
-                array('reply'=>$postid, 'transition'=>$transition->id, 'to'=>$sid)), $lbl);
+
+            if (!is_array($menu_postid)) {
+                $lbl = html_writer::link(new moodle_url($url,
+                    array('reply'=>$menu_postid, 'transition'=>$transition->id, 'to'=>$sid)), $lbl);
+            } else {
+                if (count($menu_postid) > 1) {
+                    $user_links = '';
+                    $tmp_usernames = array();
+                    foreach ($menu_postid as $postid=>$username) {
+                        if (in_array($username, $tmp_usernames)) continue;
+                        $tmp_usernames[] = $username;
+                        $user_links .= ', '.html_writer::link(new moodle_url($url,
+                            array('reply'=>$postid, 'transition'=>$transition->id, 'to'=>$sid)), $username);
+                    }
+                    $lbl = $lbl.'. Para: '.substr($user_links, 2); 
+                } else {
+                    $lbl = html_writer::link(new moodle_url($url,
+                        array('reply'=>array_pop(array_keys($menu_postid)),
+                                'transition'=>$transition->id, 'to'=>$sid)), $lbl);
+                }
+            }
         }
         return $lbl;
     }
